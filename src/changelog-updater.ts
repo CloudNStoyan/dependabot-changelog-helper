@@ -31,14 +31,16 @@ export function newUpdater(
   changelogPath: fs.PathLike,
   entryPrefix: string,
   sectionHeader: string,
-  sort: string
+  sort: string,
+  includePrLink: string
 ): ChangelogUpdater {
   return new DefaultChangelogUpdater(
     version,
     changelogPath,
     entryPrefix,
     sectionHeader,
-    sort
+    sort,
+    includePrLink
   )
 }
 
@@ -55,7 +57,8 @@ export class DefaultChangelogUpdater implements ChangelogUpdater {
     private readonly changelogPath: fs.PathLike,
     private readonly entryPrefix: string,
     private readonly sectionHeader: string,
-    private readonly sort: string
+    private readonly sort: string,
+    private readonly includePrLink: string
   ) {
     this.contents = []
     this.changed = false
@@ -163,6 +166,11 @@ export class DefaultChangelogUpdater implements ChangelogUpdater {
   private buildEntryLine(entry: VersionEntry): string {
     const lineStart = this.buildEntryLineForDuplicateCheck(entry)
     const currentPullRequest = this.buildPullRequestLink(entry)
+
+    if (this.includePrLink !== 'true') {
+      return `${lineStart}`
+    }
+
     return `${lineStart} (${currentPullRequest})`
   }
 

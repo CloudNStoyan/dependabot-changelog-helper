@@ -14,6 +14,7 @@ export async function run(): Promise<void> {
     const entryPrefix: string = core.getInput('entryPrefix')
     const sectionHeader: string = core.getInput('sectionHeader')
     const sort: string = core.getInput('sort')
+    const includePrLink: string = core.getInput('includePrLink')
     const payload = github.context.payload
 
     // If the `activationLabels` input is set, use it and ignore the `activationLabel` input
@@ -24,7 +25,8 @@ export async function run(): Promise<void> {
         changelogPath,
         entryPrefix,
         sectionHeader,
-        sort
+        sort,
+        includePrLink
       )
       const extractor = getExtractor(payload)
       const entries = extractor.getEntries(payload)

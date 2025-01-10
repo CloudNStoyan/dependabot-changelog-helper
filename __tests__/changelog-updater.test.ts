@@ -61,6 +61,37 @@ test('adds an entry to the changelog and it does not get sorted', async () => {
 `)
 })
 
+const CHANGELOG_WITH_PROPER_SECTIONS_AND_ENTRIES_WITHOUT_PR_LINK = `# Changelog
+
+## [v1.0.0]
+### Dependencies
+- Bump \`different-package\` from v1 to v2
+- Bump \`xyz\` from v1 to v2
+`
+
+test('adds an entry to the changelog without pr link', async () => {
+  mockReadStream(CHANGELOG_WITH_PROPER_SECTIONS_AND_ENTRIES_WITHOUT_PR_LINK)
+
+  await runUpdate(
+    'v1.0.0',
+    './CHANGELOG.md',
+    'Bump',
+    'Dependencies',
+    undefined,
+    undefined,
+    'false'
+  )
+
+  expectWrittenChangelogToBe(`# Changelog
+
+## [v1.0.0]
+### Dependencies
+- Bump \`different-package\` from v1 to v2
+- Bump \`xyz\` from v1 to v2
+- Bump \`package\` from v1 to v2
+`)
+})
+
 const CHANGELOG_WITH_PROPER_SECTIONS_AND_ENTRIES = `# Changelog
 
 ## [v1.0.0]
@@ -725,14 +756,16 @@ async function runUpdate(
   entryPrefix: string,
   sectionHeader: string,
   sort: string = 'none',
-  additionalEntries: VersionEntry[] = []
+  additionalEntries: VersionEntry[] = [],
+  includePrLink: string = 'true'
 ): Promise<void> {
   const updater = new DefaultChangelogUpdater(
     version,
     changelogPath,
     entryPrefix,
     sectionHeader,
-    sort
+    sort,
+    includePrLink
   )
 
   const entries = [PACKAGE_ENTRY, ...additionalEntries]
