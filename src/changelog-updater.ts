@@ -80,6 +80,11 @@ export class DefaultChangelogUpdater implements ChangelogUpdater {
         this.sectionFound = result.sectionFound
         this.sectionStartLineNumber = result.sectionStartLineNumber
         this.entries = result.dependencyEntries
+
+        console.log('Found regex: ', regex)
+        console.log('sectionFound', this.sectionFound)
+        console.log('sectionStartLineNumber', this.sectionStartLineNumber)
+        console.log('entries', this.entries)
         break
       }
     }
