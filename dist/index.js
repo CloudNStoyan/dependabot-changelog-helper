@@ -46,6 +46,7 @@ class DefaultChangelogUpdater {
                 this.sectionFound = result.sectionFound;
                 this.sectionStartLineNumber = result.sectionStartLineNumber;
                 this.entries = result.dependencyEntries;
+                console.log('result', result);
                 console.log('Found regex: ', regex);
                 console.log('sectionFound', this.sectionFound);
                 console.log('sectionStartLineNumber', this.sectionStartLineNumber);
